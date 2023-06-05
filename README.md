@@ -79,7 +79,9 @@ celery -A LoopKitchenAPI beat -l info
 ```
 
 
-You can access the following API endpoint
+If this is the first time running the server, kindly run celery beat service to ensure that the
+the required data for triggering reports is installed on the system. This will take 1 hour as the
+service is scheduled in that way. Once complete, You can access the following API endpoints !
 
 [`GET /trigger_report`]: Triggers New Report Generations by providing users with unique Report-ID
 
@@ -97,9 +99,3 @@ google cloud console and generate one for yourself.
 [`https://console.cloud.google.com`]
 
 Credentials as of now is present in the repository.
-
-
-## License ##
-
-This library is distributed under the BSD-style license found in the [LICENSE](./LICENSE)
-file.
