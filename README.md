@@ -1,16 +1,23 @@
-# LoopAPI - San Francisco #
+# LoopAPI #
 
-LoopAPI is a client side REST API for accessing the triggering and generation of report endpoints.
+## Introduction ##
 
-Tech Stack: Django, Celery, Redis, Pandas, SQLite3, HTML, CSS
+LoopAPI is a web application for accessing the triggering and generation of report endpoints.
+Data from restaurants is polled every hour and stored in google sheets. The Django backend employs
+Celery workers to schedule hourly tasks that downloads this data as a CSV file using Google API's.
+Now when a restaurant owner wants an analytics report, he can go to the trigger report endpoint url and
+generate a token. This will add a task to the Redis queue and it will handle the background processing of
+this big data using Pandas. The final report can be downloaded as a PDF file by navigating to the report
+generation endpoint url. Once the token is submitted, the task status pertaining to it is verified in the
+backend and the user is notified of the status.
 
-Django REST Framework (DRF) was not used as Django FileResponses/HttpResponse doesn't download files
-on endpoint receiving a POST request due to rendering issues. Hence I decided to implement the endpoints
-using some frontend. Hence don't expect a JSON response :)
+Tech Stack: Django, Celery, Redis, Pandas, Swifter, Python, JavaScript SQLite3, HTML, CSS
 
 Celery beat service was used to perform background downloads of hourly polled store data. Message brokering
 queue used was Redis. All reports were processed using Pandas and Swifter for parallel processing. All the data
 was stored on SQLite3 database using Django Models.
+
+## User Report Logic ##
 
 The logic behind producing the Output Reports are as follows:
 Consider a store with time and status.
@@ -41,7 +48,7 @@ with respect to the closing and opening hours of the store. We then sum it up wi
 The web-app is working perfectly and you can generate an output report as csv file by following the instructions below.
 All corner cases and type errors has also been managed.
 
-## Installation ##
+## Getting Started ##
 
 Create and activate a virtual environment:
 
@@ -89,6 +96,9 @@ service is scheduled in that way. Once complete, You can access the following AP
 
 [`POST /get_report`]: Downloads Report Generations using user assigned Report-ID verified at backend
 
+## Testing ##
+
+Unit Testing and functional testing was performed locally using PyTest.
 
 ### Authentication ###
 
